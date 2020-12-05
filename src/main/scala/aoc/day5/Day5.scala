@@ -38,9 +38,9 @@ object Day5 extends App {
     val mySeatIds =
       for {
         id <- allIds.min to allIds.max
-        if allIds.contains(id - 1)
-        if !allIds.contains(id)
-        if allIds.contains(id + 1)
+        if allIds contains id - 1
+        if !(allIds contains id)
+        if allIds contains id + 1
       } yield id
     println(mySeatIds)
   }
