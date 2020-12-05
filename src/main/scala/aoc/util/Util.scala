@@ -4,6 +4,8 @@ import scala.io.Source
 
 object Util {
 
+  def loadString(path: String): String = Source.fromResource(path).mkString
+
   def loadLines(path: String): Seq[String] = Source.fromResource(path).getLines().toSeq
 
   implicit class RichSeqOfSeq[T](xs: Seq[Seq[T]]) {
