@@ -19,4 +19,16 @@ object Util {
     }
   }
 
+  import scala.collection.IterableOnce
+
+  implicit class SumByOperation[A](coll: IterableOnce[A]) {
+    def sumBy[B](f: A => B)(implicit num: Numeric[B]): B = {
+      val it = coll.iterator
+      var result = f(it.next())
+      while (it.hasNext) {
+        result = num.plus(result, f(it.next()))
+      }
+      result
+    }
+  }
 }
