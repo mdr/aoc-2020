@@ -90,6 +90,6 @@ object Day7 extends App {
   println("Part Two")
   solvePartTwo("day7/example.txt")
   solvePartTwo("day7/example2.txt")
-    solvePartTwo("day7/puzzle.txt")
+  solvePartTwo("day7/puzzle.txt")
 
 }
