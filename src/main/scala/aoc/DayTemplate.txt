@@ -1,5 +1,3 @@
-package aoc.day8
-
 
 object Day7 extends App {
 
@@ -15,7 +13,6 @@ object Day7 extends App {
   println()
   println("Part Two")
   solvePartTwo("day7/example.txt")
-  solvePartTwo("day7/example2.txt")
   solvePartTwo("day7/puzzle.txt")
 
 }
