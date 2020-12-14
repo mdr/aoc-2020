@@ -17,17 +17,25 @@ case class State(mask: Mask = Mask.Initial, memory: Map[Long, Long] = Map(), mod
 
   def run(instruction: Instruction): State =
     instruction match {
-      case AssignmentInstruction(address, value) if mode == Mode.One =>
-        copy(memory = memory + (address -> mask.apply1(value)))
-      case AssignmentInstruction(address, value) if mode == Mode.Two =>
-        val baseAddress = mask.apply2(address)
-        var newMemory = memory
-        for (floaters <- mask.floaters.subsets)
-          newMemory = newMemory + (baseAddress + floaters.sum -> value)
-        copy(memory = newMemory)
+      case AssignmentInstruction(address, value) =>
+        mode match {
+          case Mode.One => handleAssignment1(address, value)
+          case Mode.Two => handleAssignment2(address, value)
+        }
       case SetMask(mask) =>
         copy(mask = mask)
     }
+
+  private def handleAssignment1(address: Long, value: Long): State =
+    copy(memory = memory + (address -> mask.apply1(value)))
+
+  private def handleAssignment2(address: Long, value: Long): State = {
+    val baseAddress = mask.apply2(address)
+    var newMemory = memory
+    for (floaters <- mask.floaters.subsets)
+      newMemory = newMemory + (baseAddress + floaters.sum -> value)
+    copy(memory = newMemory)
+  }
 
   def memorySum: Long = memory.values.sum
 
@@ -90,7 +98,6 @@ object Day14 extends App {
     val finalState = instructions.foldLeft(initialState)(_ run _)
     println(finalState.memorySum)
   }
-
 
   println("Part One")
   solvePartOne("day14/example.txt")
