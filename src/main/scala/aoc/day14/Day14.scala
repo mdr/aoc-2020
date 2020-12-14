@@ -92,8 +92,7 @@ object Day14 extends App {
   def solvePartTwo(inputPath: String): Unit = solve(inputPath, Mode.Two)
 
   private def solve(inputPath: String, mode: Mode): Unit = {
-    val lines = Util.loadLines(inputPath)
-    val instructions = lines.map(Instruction.parse)
+    val instructions = Util.loadLines(inputPath).map(Instruction.parse)
     val initialState = State(mode = mode)
     val finalState = instructions.foldLeft(initialState)(_ run _)
     println(finalState.memorySum)
