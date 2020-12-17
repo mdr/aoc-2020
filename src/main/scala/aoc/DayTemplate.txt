@@ -1,7 +1,9 @@
 
+import aoc.util.Util
 object Day7 extends App {
 
   def solvePartOne(inputPath: String): Unit = {
+    Util.loadString(inputPath)
   }
 
   def solvePartTwo(inputPath: String): Unit = {

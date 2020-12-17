@@ -1,5 +1,6 @@
 package aoc.util
 
+import scala.annotation.tailrec
 import scala.io.Source
 
 object Util {
@@ -7,6 +8,10 @@ object Util {
   def loadString(path: String): String = Source.fromResource(path).mkString
 
   def loadLines(path: String): Seq[String] = Source.fromResource(path).getLines().toSeq
+
+  implicit class RichSeq[T](xs: Seq[T]) {
+    def traverse[U](f: T => Seq[U]): Seq[Seq[U]] = xs.map(f).sequence
+  }
 
   implicit class RichSeqOfSeq[T](xs: Seq[Seq[T]]) {
     def sequence: Seq[Seq[T]] = xs match {
@@ -17,6 +22,7 @@ object Util {
           xs <- rest.sequence
         } yield x +: xs
     }
+
   }
 
   import scala.collection.IterableOnce
@@ -31,4 +37,8 @@ object Util {
       result
     }
   }
+
+  @tailrec
+  def iterate[T](value: T, times: Int)(f: T => T): T = if (times == 0) value else iterate(f(value), times - 1)(f)
+
 }
