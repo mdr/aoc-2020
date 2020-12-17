@@ -18,17 +18,11 @@ case class Position(coordinates: Seq[Int]) {
 
 case class Grid(activeCells: Set[Position], dimensions: Int) {
 
-  def allPositions: Seq[Position] = (0 until dimensions).traverse(coordinateRange).map(Position)
-
-  private def coordinateRange(dimension: Int): Seq[Int] = {
-    val coordinateValues = activeCells.map(_.coordinates(dimension))
-    coordinateValues.min - 1 to coordinateValues.max + 1
-  }
-
   def cycle: Grid = {
     var nextActiveCells = activeCells
+    val positionsToCheck = (0 until dimensions).traverse(coordinateRange).map(Position)
     for {
-      position <- allPositions
+      position <- positionsToCheck
       isActive = activeCells(position)
       activeNeighbourCount = position.neighbours count activeCells
     } {
@@ -42,6 +36,11 @@ case class Grid(activeCells: Set[Position], dimensions: Int) {
     copy(activeCells = nextActiveCells)
   }
 
+  private def coordinateRange(dimension: Int): Seq[Int] = {
+    val coordinateValues = activeCells.map(_.coordinates(dimension))
+    coordinateValues.min - 1 to coordinateValues.max + 1
+  }
+
   def activeCellCount: Int = activeCells.size
 
 }
@@ -49,16 +48,13 @@ case class Grid(activeCells: Set[Position], dimensions: Int) {
 object Grid {
 
   def parse(s: String, dimensions: Int): Grid = {
+    val zeroCoordinates = Seq.fill(dimensions - 2)(0)
     val activeCells =
       for {
         (row, y) <- s.split("\n").zipWithIndex
         (c, x) <- row.zipWithIndex
         if c == '#'
-      } yield
-        if (dimensions == 3)
-          Position(Seq(x, y, 0))
-        else
-          Position(Seq(x, y, 0, 0))
+      } yield Position(Seq(x, y) ++ zeroCoordinates)
     Grid(activeCells.toSet, dimensions)
   }
 
