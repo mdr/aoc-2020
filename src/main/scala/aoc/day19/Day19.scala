@@ -32,6 +32,8 @@ object Rule {
     ruleId.toInt -> rule
   }
 
+  def parseRules(rulesSection: String): Map[RuleId, Rule] = rulesSection.split("\n").map(Rule.parse).toMap
+
 }
 
 case class Validator(rules: Map[RuleId, Rule]) {
@@ -69,7 +71,7 @@ object Day19 extends App {
   def solvePartTwo(inputPath: String): Unit = {
     val (originalRules, messages) = parseRulesAndMessages(inputPath)
     val overrideRules =
-      parseRules(
+      Rule.parseRules(
         """8: 42 | 42 8
           |11: 42 31 | 42 11 31""".stripMargin)
     val rules = originalRules ++ overrideRules
@@ -80,12 +82,10 @@ object Day19 extends App {
 
   private def parseRulesAndMessages(inputPath: String): (Map[RuleId, Rule], Seq[String]) = {
     val Array(section1, section2) = Util.loadString(inputPath).split("\n\n")
-    val rules = parseRules(section1)
+    val rules = Rule.parseRules(section1)
     val messages = section2.split("\n").toSeq
     (rules, messages)
   }
-
-  private def parseRules(rulesSection: String): Map[RuleId, Rule] = rulesSection.split("\n").map(Rule.parse).toMap
 
   println("Part One")
   solvePartOne("day19/example.txt")
