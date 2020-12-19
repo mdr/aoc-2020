@@ -74,13 +74,19 @@ object Day7 extends App {
   def solvePartTwo(inputPath: String): Unit = {
     val rules = Util.loadLines(inputPath).map(parseRule)
 
-    val ruleMap: Map[Colour, Seq[ContentsSpec]] = (for (Rule(colour, contentsSpecs) <- rules) yield colour -> contentsSpecs).toMap
+    val ruleMap: Map[Colour, Seq[ContentsSpec]] =
+      (for (Rule(colour, contentsSpecs) <- rules) yield colour -> contentsSpecs).toMap
     println(numberOfBagsInside(ShinyGold, ruleMap))
   }
 
   private def numberOfBagsInside(colour: Colour, ruleMap: Map[Colour, Seq[ContentsSpec]]): Int = {
     val contentsSpecs = ruleMap(colour)
-    if (contentsSpecs.isEmpty) 0 else contentsSpecs.sumBy { case ContentsSpec(amount, colour) => amount * (numberOfBagsInside(colour, ruleMap) + 1) }
+    if (contentsSpecs.isEmpty)
+      0
+    else
+      contentsSpecs.sumBy {
+        case ContentsSpec(amount, colour) => amount * (numberOfBagsInside(colour, ruleMap) + 1)
+      }
   }
 
   println("Part One")
