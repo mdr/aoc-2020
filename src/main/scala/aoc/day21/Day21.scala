@@ -64,6 +64,7 @@ object Day21 extends App {
     val allIngredients = foods.flatMap(_.ingredients).toSet
     val safeIngredients = allIngredients -- dangerousIngredients
     val safeOccurrences = foods.sumBy(_.ingredients count safeIngredients)
+
     println(safeOccurrences)
     println(finalSolverState.resolved.toSeq.sortBy(_._1).map(_._2).mkString(","))
   }
