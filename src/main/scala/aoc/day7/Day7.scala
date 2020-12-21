@@ -79,15 +79,10 @@ object Day7 extends App {
     println(numberOfBagsInside(ShinyGold, ruleMap))
   }
 
-  private def numberOfBagsInside(colour: Colour, ruleMap: Map[Colour, Seq[ContentsSpec]]): Int = {
-    val contentsSpecs = ruleMap(colour)
-    if (contentsSpecs.isEmpty)
-      0
-    else
-      contentsSpecs.sumBy {
-        case ContentsSpec(amount, colour) => amount * (numberOfBagsInside(colour, ruleMap) + 1)
-      }
-  }
+  private def numberOfBagsInside(colour: Colour, ruleMap: Map[Colour, Seq[ContentsSpec]]): Int =
+    ruleMap(colour).sumBy {
+      case ContentsSpec(amount, colour) => amount * (numberOfBagsInside(colour, ruleMap) + 1)
+    }
 
   println("Part One")
   solvePartOne("day7/example.txt")

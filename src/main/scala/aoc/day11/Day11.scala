@@ -1,6 +1,7 @@
 package aoc.day11
 
 import aoc.util.Util
+import aoc.util.Util.iterateUntilSteadyState
 
 import scala.annotation.tailrec
 
@@ -106,12 +107,6 @@ object SeatingArrangement {
 }
 
 object Day11 extends App {
-
-  @tailrec
-  private def iterateUntilSteadyState[T](initial: T)(iterate: T => T): T = {
-    val next = iterate(initial)
-    if (next == initial) initial else iterateUntilSteadyState(next)(iterate)
-  }
 
   def solvePartOne(inputPath: String): Unit = {
     val arrangement = loadArrangement(inputPath)

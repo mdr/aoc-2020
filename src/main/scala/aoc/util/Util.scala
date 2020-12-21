@@ -30,6 +30,8 @@ object Util {
   implicit class SumByOperation[A](coll: IterableOnce[A]) {
     def sumBy[B](f: A => B)(implicit num: Numeric[B]): B = {
       val it = coll.iterator
+      if (!it.hasNext)
+        return num.zero
       var result = f(it.next())
       while (it.hasNext) {
         result = num.plus(result, f(it.next()))
@@ -40,5 +42,11 @@ object Util {
 
   @tailrec
   def iterate[T](value: T, times: Int)(f: T => T): T = if (times == 0) value else iterate(f(value), times - 1)(f)
+
+  @tailrec
+  def iterateUntilSteadyState[T](initial: T)(iterate: T => T): T = {
+    val next = iterate(initial)
+    if (next == initial) initial else iterateUntilSteadyState(next)(iterate)
+  }
 
 }
