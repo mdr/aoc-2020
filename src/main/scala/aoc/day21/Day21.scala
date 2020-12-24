@@ -59,7 +59,6 @@ object Day21 extends App {
     val initialSolverState = SolverState(initialOptions)
     val finalSolverState = iterateUntilSteadyState(initialSolverState)(_.solve)
     if (!finalSolverState.allResolved) throw new AssertionError("Not all resolved")
-
     val dangerousIngredients = finalSolverState.resolved.values.toSet
     val allIngredients = foods.flatMap(_.ingredients).toSet
     val safeIngredients = allIngredients -- dangerousIngredients

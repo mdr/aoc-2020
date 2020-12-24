@@ -37,27 +37,6 @@ object Day1 extends App {
       .headOption
       .getOrElse(throw new RuntimeException("No matching sum found"))
 
-  private def findTwoEntriesThatSum(entries: Seq[Int], targetSum: Int): Answer = {
-    val answers =
-      for {
-        n1 <- entries
-        n2 <- entries
-        if n1 + n2 == targetSum
-      } yield Answer(Seq(n1, n2))
-    answers.headOption.getOrElse(throw new RuntimeException("No matching sum found"))
-  }
-
-  private def findThreeEntriesThatSum(entries: Seq[Int], targetSum: Int): Answer = {
-    val answers =
-      for {
-        n1 <- entries
-        n2 <- entries
-        n3 <- entries
-        if n1 + n2 + n3 == targetSum
-      } yield Answer(Seq(n1, n2, n3))
-    answers.headOption.getOrElse(throw new RuntimeException("No matching sum found"))
-  }
-
   def solvePartTwo(inputPath: String): Unit = {
     val entries = loadLines(inputPath).map(_.toInt)
     val answer = findEntriesThatSum(entries, numberOfEntries = 3, targetSum = 2020)
